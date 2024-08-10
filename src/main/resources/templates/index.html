@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+
+    <h1>Acortador de urls</h1>
+    <form th:action="@{/form}" th:object="${shorturl}" method="post">
+        <label>Ingrese aquí su url para recortar</label>
+        <div>
+            <input type="text" placeholder="www.google.com" name="url" >
+            <button>Recortar</button>
+        </div>
+    </form>
+
+    <a href="/listofurls.html">Ver la url recortadas</a>
+
+</body>
+</html>

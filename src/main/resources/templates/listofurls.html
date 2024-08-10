@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>List of shorturls</title>
+</head>
+<body>
+
+    <h1>List of urls</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Website</th>
+                <th>Short url</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="url : ${shorturlPage.content}">
+                <td>ID</td>
+                <td>Website</td>
+                <td>Short Url</td>
+                <td>Fecha</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="/index.html">Volver al inicio</a>
+
+
+</body>
+</html>
