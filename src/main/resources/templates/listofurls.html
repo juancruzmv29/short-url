@@ -7,6 +7,16 @@
 <body>
 
     <h1>List of urls</h1>
+
+    <h2>Buscar por sitio las urls generadas</h2>
+    <form th:action="@{/urlsSitio}" method="get">
+        <label for="sitio">Ingrese un sitio especifico</label>
+        <input type="text" id="sitio" name="sitio" th:value="${sitio}">
+
+        <button type="submit">Buscar</button>
+        <a href="/urls"><button type="button">Limpiar</button></a>
+    </form>
+
     <table>
         <thead>
             <tr>
@@ -17,16 +27,19 @@
             </tr>
         </thead>
         <tbody>
-            <tr th:each="url : ${shorturlPage.content}">
-                <td>ID</td>
-                <td>Website</td>
-                <td>Short Url</td>
-                <td>Fecha</td>
+            <tr th:each="url : ${urlsSitio}">
+                <td th:text="${url.id}">ID</td>
+                <td th:text="${url.url}">Website</td>
+                <td th:text="${url.shortUrl}">Short Url</td>
+                <td th:text="${url.fecha}">Fecha</td>
+            </tr>
+            <tr th:if="{urlsSitio.size() == 0}">
+                <td>No hay resultados con ese sitio</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="/index.html">Volver al inicio</a>
+    <a href="/">Volver al inicio</a>
 
 
 </body>

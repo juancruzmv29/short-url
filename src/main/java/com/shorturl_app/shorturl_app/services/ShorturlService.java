@@ -9,14 +9,15 @@ import java.util.Optional;
 public interface ShorturlService {
 
 
-    public List<Shorturl> mostrarTodas();
+    List<Shorturl> mostrarTodas();
 
-    public Optional<Shorturl> buscarPorId(Long id);
 
-    public List<Shorturl> buscarPorSitio(String sitio);
+    List<Shorturl> buscarPorSitio(String sitio);
 
-    public List<Shorturl> buscarPorFecha(Date date);
+    /*
+    List<Shorturl> buscarPorFecha(Date date);
+    */
 
-    public String shortUrl(String url);
+    String shortUrl(String url);
 
 }

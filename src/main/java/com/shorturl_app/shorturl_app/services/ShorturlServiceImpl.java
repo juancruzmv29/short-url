@@ -50,18 +50,15 @@ public class ShorturlServiceImpl implements ShorturlService{
         return repository.findAll();
     }
 
-    @Override
-    public Optional<Shorturl> buscarPorId(Long id) {
-        return repository.findById(id);
-    }
 
     @Override
     public List<Shorturl> buscarPorSitio(String sitio) {
         return repository.buscarPorSitio(sitio);
     }
 
+    /*
     @Override
     public List<Shorturl> buscarPorFecha(Date date) {
         return repository.buscarPorFecha(date);
-    }
+    }*/
 }

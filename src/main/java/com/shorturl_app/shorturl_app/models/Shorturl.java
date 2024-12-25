@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import java.util.Date;
 
 @Entity
-@Table(name = "shorturl")
+@Table(name = "shorturls")
 public class Shorturl {
 
 
@@ -20,6 +20,9 @@ public class Shorturl {
 
     @NotBlank
     private String url;
+
+    @NotBlank
+    private String sitio;
 
     @NotBlank
     @Max(30)
@@ -43,6 +46,14 @@ public class Shorturl {
 
     public String getUrl() {
         return url;
+    }
+
+    public String getSitio() {
+        return sitio;
+    }
+
+    public void setSitio(String sitio) {
+        this.sitio = sitio;
     }
 
     public void setUrl(String url) {
