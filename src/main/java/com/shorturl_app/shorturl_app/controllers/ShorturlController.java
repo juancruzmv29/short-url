@@ -5,16 +5,21 @@ import com.shorturl_app.shorturl_app.models.Shorturl;
 import com.shorturl_app.shorturl_app.services.ShorturlService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-@RestController
-@RequestMapping(path = "/")
+@Controller
+@RequestMapping("/")
 public class ShorturlController {
 
 
@@ -24,96 +29,76 @@ public class ShorturlController {
 
     // genera una short url
     @PostMapping("/")
-    public String generarShortUrl(@RequestParam String url, Model model, BindingResult result) {
-        // El servicio generará una url
-        String shortCode = service.shortUrl(url);
-
+    public String generarShortUrl(@RequestParam String url, Model model) {
         try {
+            Shorturl shorturl = new Shorturl(url);
 
-            if(result.hasErrors()) {
-                model.addAttribute("titulo", "Resultado form");
-                return "/";
-            }
-
-            Shorturl shorturl = new Shorturl();
-            shorturl.setUrl(url);
+            // Generar short code
+            String shortCode = service.shortUrl(url);
             shorturl.setShortUrl(shortCode);
-            shorturl.setFecha(new Date());
+
+            // Extraer dominio usando regex
+            String sitioExtraido = "";
+            Pattern pattern = Pattern.compile("(?<=www\\.)[^.]+(?=\\.com)");
+            Matcher matcher = pattern.matcher(url);
+            if (matcher.find()) {
+                sitioExtraido = matcher.group();
+            }
+            shorturl.setSitio(sitioExtraido);
+
+
+            //shorturl.setFecha(new Date());
+
+            // Guardar en DB
+            service.guardarUrl(shorturl);
+
+            // Pasar objeto al modelo
+            model.addAttribute("shorturl", shorturl);
         } catch (Exception e) {
-            new CustomException(e.getMessage());
+            e.printStackTrace();
+            model.addAttribute("error", "Error al generar la URL corta");
         }
 
-        // Agregamos el nombre del atributo y el valor del atributo
-        model.addAttribute("urloriginal", url);
-        model.addAttribute("shortUrl", "http://localhost:8080" + shortCode);
-
-        return "/";
+        return "index";
     }
+
 
     @GetMapping("/")
     public String limpiarCampos(Model model) {
         Shorturl shortUrlVacia = new Shorturl();
 
         shortUrlVacia.setId(null);
-        shortUrlVacia.setFecha(null);
+        //shortUrlVacia.setFecha(null);
         shortUrlVacia.setUrl("");
         shortUrlVacia.setShortUrl("");
 
-        // model.addAtributte("campo_vacio", shortUrlVacia);
+        model.addAttribute("shorturl", shortUrlVacia);
 
-        return "/";
+        return "index";
 
     }
 
-
-    // lista todas las urls generadas
     @GetMapping("/listofurls")
-    public String buscarTodas(Model model) {
-
-        List<Shorturl> list = null;
+    public String buscarPorSitio(@RequestParam(required = false) String sitio, Model model) {
+        List<Shorturl> listaPorSitio;
 
         try {
-            list = service.mostrarTodas();
+            if (sitio != null && !sitio.isBlank()) {
+                listaPorSitio = service.buscarPorSitio(sitio);
+            } else {
+                listaPorSitio = service.mostrarTodas();
+            }
         } catch (Exception e) {
-            new CustomException(e.getMessage());
+            throw new CustomException(e.getMessage());
         }
 
-        model.addAttribute("urls", list);
-
-        return "/listofurls";
-    }
-
-    // Buscan las urls recortada que se generaron por sitio
-    @GetMapping("/listofurls")
-    public String buscarPorSitio(@RequestParam() String sitio, Model model) {
-
-        List<Shorturl> list = null;
-
-        try {
-            list = service.buscarPorSitio(sitio);
-        } catch (Exception e) {
-            new CustomException(e.getMessage());
-        }
-
-        model.addAttribute("urlsSitio", list);
+        model.addAttribute("listaPorSitio", listaPorSitio);
         model.addAttribute("sitio", sitio);
-
-        return "/listofurls";
+        return "listofurls";
     }
 
-    // Se va a buscar una url por fecha
-    /*
-    @GetMapping("listofurls")
-    public List<Shorturl> buscarPorFecha(@RequestParam Date fecha) {
-        List<Shorturl> list = null;
 
-        try {
-            list = service.buscarPorFecha(fecha);
-        } catch (Exception e) {
-            new CustomException(e.getMessage());
-        }
 
-        return list;
-    }*/
+
 
 }

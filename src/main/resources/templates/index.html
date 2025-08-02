@@ -6,26 +6,27 @@
 </head>
 <body>
 
-    <h1>Acortador de urls</h1>
-    <form th:action="/" method="post">
-        <label for="url">Ingrese aquí su url para recortar</label>
-        <div>
-            <input type="text" id="url" placeholder="www.google.com" name="url" th:field="*{url}" required >
-            <button type="submit">Recortar</button>
-        </div>
+<h1>Acortador de URLs</h1>
 
-        <a href="/">
-            <button type="button">Borrar</button>
-        </a>
-    </form>
-
-    <div th:if="${shortUrl}">
-        <h2 th:text="${shortUrl.url}"></h2>
-        <h2 th:text="${shortUrl.shortUrl}"></h2>
-        <p><a th:href="${shortUrl.shortUrl}" ></a></p>
+<form th:action="@{/}" method="post">
+    <label for="url">Ingrese aquí su URL para recortar</label>
+    <div>
+        <input type="text" id="url" name="url" placeholder="Ingrese una URL" required>
+        <button type="submit">Recortar</button>
     </div>
+</form>
 
-    <a href="/listofurls">Ver la url recortadas</a>
+<form th:action="@{/}" method="get">
+    <button type="submit">Borrar</button>
+</form>
+
+<div th:if="${shorturl}">
+    <h2>URL original: <span th:text="${shorturl.url}"></span></h2>
+    <h2>Dominio: <span th:text="${shorturl.sitio}"></span></h2>
+    <h2>URL recortada: <a th:href="${shorturl.shortUrl}" th:text="${shorturl.shortUrl}"></a></h2>
+</div>
+
+<a th:href="@{/listofurls}">Ver las URLs recortadas</a>
 
 </body>
 </html>

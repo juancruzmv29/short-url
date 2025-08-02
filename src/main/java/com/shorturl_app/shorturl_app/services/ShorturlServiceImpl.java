@@ -17,13 +17,13 @@ public class ShorturlServiceImpl implements ShorturlService{
     @Autowired
     private ShorturlRepository repository;
 
-    private final String BASE_URL = "http://localhost:8080";
+    //private final String BASE_URL = "http://localhost:8080";
 
 
     // Genera la url recortada
     public String shortUrl(String urlOriginal) {
         String shortUrlCode = generateShortCode();
-        String shortUrl = BASE_URL + shortUrlCode;
+        String shortUrl = shortUrlCode;
 
         Shorturl shorturl = new Shorturl();
         shorturl.setUrl(urlOriginal);
@@ -31,6 +31,10 @@ public class ShorturlServiceImpl implements ShorturlService{
 
         repository.save(shorturl);
         return shortUrl;
+    }
+
+    public void guardarUrl(Shorturl shortUrl) {
+        repository.save(shortUrl);
     }
 
     // Acopla la url base con la shortUrl

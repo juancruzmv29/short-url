@@ -9,12 +9,15 @@
     <h1>List of urls</h1>
 
     <h2>Buscar por sitio las urls generadas</h2>
-    <form th:action="@{/urlsSitio}" method="get">
-        <label for="sitio">Ingrese un sitio especifico</label>
+    <form th:action="@{/listofurls}" method="get">
+    <label for="sitio">Ingrese un sitio especifico</label>
         <input type="text" id="sitio" name="sitio" th:value="${sitio}">
 
         <button type="submit">Buscar</button>
-        <a href="/urls"><button type="button">Limpiar</button></a>
+        <a th:href="@{/listofurls}">
+            <button type="button">Limpiar</button>
+        </a>
+
     </form>
 
     <table>
@@ -23,23 +26,25 @@
                 <th>ID</th>
                 <th>Website</th>
                 <th>Short url</th>
-                <th>Fecha</th>
+                <th>Sitio</th>
             </tr>
         </thead>
         <tbody>
-            <tr th:each="url : ${urlsSitio}">
+            <tr th:each="url : ${listaPorSitio}">
                 <td th:text="${url.id}">ID</td>
                 <td th:text="${url.url}">Website</td>
                 <td th:text="${url.shortUrl}">Short Url</td>
-                <td th:text="${url.fecha}">Fecha</td>
+                <td th:text="${url.sitio}">Short Url</td>
             </tr>
-            <tr th:if="{urlsSitio.size() == 0}">
-                <td>No hay resultados con ese sitio</td>
+            <tr th:if="${listaPorSitio.size() == 0}">
+                <td colspan="4">No hay resultados urls</td>
             </tr>
+
         </tbody>
     </table>
 
-    <a href="/">Volver al inicio</a>
+
+    <a th:href="@{/}">Volver al inicio</a>
 
 
 </body>

@@ -14,6 +14,8 @@ public interface ShorturlService {
 
     List<Shorturl> buscarPorSitio(String sitio);
 
+    void guardarUrl(Shorturl shorturl);
+
     /*
     List<Shorturl> buscarPorFecha(Date date);
     */

@@ -18,22 +18,26 @@ public class Shorturl {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
 
-    @NotBlank
+    @NotBlank(message = "no debe estar vacío")
     private String url;
 
-    @NotBlank
+
     private String sitio;
 
-    @NotBlank
-    @Max(30)
+    @Column(name = "short_url")
     private String shortUrl;
 
-    // dateFormat = (pattern = "yyyy-MM-dd")
-    @NotNull
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date fecha;
+    // dateFormat = (pattern = "yyyy-MM-ddd)
+    /*@NotNull
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "fecha")
+    private Date fecha;*/
 
     public Shorturl() {
+    }
+
+    public Shorturl(String url) {
+        this.url = url;
     }
 
     public Long getId() {
@@ -68,11 +72,12 @@ public class Shorturl {
         this.shortUrl = shortUrl;
     }
 
+    /*
     public Date getFecha() {
         return fecha;
     }
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
-    }
+    }*/
 }
